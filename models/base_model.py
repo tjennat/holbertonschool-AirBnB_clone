@@ -2,26 +2,26 @@
 """This module contains the BaseModel class for the AirBnB clone"""
 
 import uuid
-from datetime import datetime
+from datetime
 
 
 class BaseModel:
     """This is the BaseModel class for the AirBnB clone"""
-    
+
     def __init__(self):
         """__init__ method"""
         self.id = str(uuid.uuid4())
         self.created_at = datetime.datetime.utcnow()
-        self.updated_at = datetime.datetime.utcnow()  
-    
+        self.updated_at = datetime.datetime.utcnow()
+
     def __str__(self):
         """__str__ method"""
         return "[{}] ({}) {}".format(self.__class__.__name__, self.id, self.__dict__)
-    
+
     def save(self):
         """save method"""
         self.updated_at = datetime.datetime.utcnow()
-        
+
     def to_dict(self):
         """to_dict method"""
         new_dict = self.__dict__.copy()
