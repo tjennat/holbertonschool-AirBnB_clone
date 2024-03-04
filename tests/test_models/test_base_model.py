@@ -29,3 +29,15 @@ class TestBaseModel(unittest.TestCase):
         my_model.name = "My First Model"
         my_model.my_number = 89
         self.assertEqual(str(my_model), "[BaseModel] ({}) {}".format(my_model.id, my_model.__dict__))
+
+    def test_init(self):
+        """Test __init__()"""
+        my_model = BaseModel()
+        self.assertIsInstance(my_model, BaseModel)
+        self.assertIsInstance(my_model.id, str)
+        self.assertIsInstance(my_model.created_at, datetime.datetime)
+        self.assertIsInstance(my_model.updated_at, datetime.datetime)
+        self.assertEqual(my_model.created_at, my_model.updated_at)
+
+if __name__ == "__main__":
+    unittest.main()
