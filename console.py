@@ -1,13 +1,11 @@
 #!/usr/bin/python3
 """this module contains the console class"""
 import cmd
-import sys
 from models.base_model import BaseModel
 
 
 class HBNBCommand(cmd.Cmd):
     """class for the console"""
-
     prompt = "(hbnb) "
 
     def do_quit(self, line):
