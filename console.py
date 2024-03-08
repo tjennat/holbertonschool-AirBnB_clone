@@ -37,17 +37,17 @@ class HBNBCommand(cmd.Cmd):
             new_instance.save()
             print(new_instance.id)
 
-    def do_show(self, line):
-        """Prints the string representation of an instance based on the class name and id."""
+    def check_instance(self, line):
+        """retun the instance from json if the line refere to a valid instance"""
         args = line.split()
         if not args:
             print("** class name missing **")
-            return
+            return None
 
         class_name = args[0]
         if len(args) < 2:
             print("** instance id missing **")
-            return
+            return None
 
         instance_id = args[1]
 
@@ -56,9 +56,23 @@ class HBNBCommand(cmd.Cmd):
         instance_key = "{}.{}".format(class_name, instance_id)
         if instance_key not in all_instances:
             print("** no instance found **")
-            return
+            return None
 
-        print(all_instances[instance_key])
+        return all_instances[instance_key]
+    
+    def do_show(self, line):
+        """Prints the string representation of an instance based on the class name and id."""
+        instance = self.check_instance(line)
+        if instance:
+            print(instance)
+    
+    def do_destroy(self, line):
+        """Deletes an instance based on the class name and id (save the change into the JSON file)."""
+        instance = self.check_instance(line)
+
+        if instance:
+            all_instances = storage.all()
+            del all_instances[instance.__name__]
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
