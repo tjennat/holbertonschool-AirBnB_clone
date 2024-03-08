@@ -2,12 +2,24 @@
 """this module contains the console class"""
 import cmd
 from models.base_model import BaseModel
+from models.user import User
+from models.city import City
+from models.state import State
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
 from models import storage
 
 
 class HBNBCommand(cmd.Cmd):
     prompt = "(hbnb) "
-    valid_classes = ["BaseModel"]
+    valid_classes = [
+        "BaseModel",
+        "Place",
+        "State",
+        "City",
+        "Amenity",
+        "Review"]
 
     def do_quit(self, line):
         '''quit command'''
@@ -81,7 +93,6 @@ class HBNBCommand(cmd.Cmd):
             else:
                 print("** no instance found **")
 
-
     def do_all(self, line):
         """Prints all string representation of
         all instances based or not on the class name."""
@@ -106,6 +117,40 @@ class HBNBCommand(cmd.Cmd):
 
             for instance in instances_of_class:
                 print(instance)
+
+    def do_update(self, line):
+        """Updates an instance based on the class name
+          and id by adding or updating attribute"""
+        args = line.split()
+
+        if len(args) < 1:
+            print("** class name missing **")
+            return
+
+        if args[0] not in self.valid_classes:
+            print("** class doesn't exist **")
+            return
+
+        if len(args) < 2:
+            print("** instance id missing **")
+            return
+
+        instance_key = f"{args[0]}.{args[1]}"
+
+        if instance_key not in storage.all():
+            print("** no instance found **")
+            return
+
+        if len(args) < 3:
+            print("** attribute name missing **")
+            return
+        if len(args) < 4:
+            print("** value missing **")
+            return
+
+        instance = storage.all()[instance_key]
+        setattr(instance, args[2], args[3])
+        instance.save()
 
 
 if __name__ == '__main__':
