@@ -30,8 +30,18 @@ class FileStorage:
         """Deserializes"""
         from models import base_model
         from models import user
+        from models import city
+        from models import state
+        from models import amenity
+        from models import place
+        from models import review
         dict_module = {"BaseModel": base_model,
-                       "User": user}
+                       "User": user,
+                       "City": city,
+                       "State": state,
+                       "Amenity": amenity,
+                       "Place": place,
+                       "Review": review}
 
         try:
             with open(self.__file_path, 'r') as f:
