@@ -28,15 +28,17 @@ class FileStorage:
 
     def reload(self):
         """Deserializes"""
+        from models import base_model
+        dict_module = {"BaseModel" : base_model}
+
         try:
             with open(self.__file_path, 'r') as f:
                 obj_dict = json.load(f)
                 for key, value in obj_dict.items():
                     class_name = value['__class__']
-                    del value['__class__']
-                    module = __import__('models.' + class_name, fromlist=[class_name])
-                    class_ = getattr(module, class_name)
-                    obj = class_(**value)
-                    self.__objects[key] = obj
+                    if class_name in dict_module :
+                        module_name = dict_module[class_name]
+                    class_ = getattr(module_name, class_name)
+                    FileStorage.__objects[key] = class_(**value)
         except FileNotFoundError:
             pass
