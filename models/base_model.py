@@ -5,6 +5,7 @@ import uuid
 from datetime import datetime
 from models import storage
 
+
 class BaseModel:
     """This is the BaseModel class for the AirBnB clone"""
     def __init__(self, *args, **kwargs):
