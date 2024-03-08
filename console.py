@@ -2,6 +2,7 @@
 """this module contains the console class"""
 import cmd
 from models.base_model import BaseModel
+from models import storage
 
 
 
@@ -35,6 +36,29 @@ class HBNBCommand(cmd.Cmd):
             new_instance = classe()
             new_instance.save()
             print(new_instance.id)
+
+    def do_show(self, line):
+        """Prints the string representation of an instance based on the class name and id."""
+        args = line.split()
+        if not args:
+            print("** class name missing **")
+            return
+
+        class_name = args[0]
+        if len(args) < 2:
+            print("** instance id missing **")
+            return
+
+        instance_id = args[1]
+
+        # Chargez l'instance à partir du fichier JSON
+        all_instances = storage.all()
+        instance_key = "{}.{}".format(class_name, instance_id)
+        if instance_key not in all_instances:
+            print("** no instance found **")
+            return
+
+        print(all_instances[instance_key])
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
