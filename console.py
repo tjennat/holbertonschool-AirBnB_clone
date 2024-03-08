@@ -70,8 +70,17 @@ class HBNBCommand(cmd.Cmd):
         instance = self.check_instance(line)
 
         if instance:
+            class_name = instance.__class__.__name__
+            instance_id = instance.id
+            instance_key = f"{class_name}.{instance_id}"
+
             all_instances = storage.all()
-            del all_instances[instance.__name__]
+            if instance_key in all_instances:
+                del all_instances[instance_key]
+                storage.save()
+            else:
+                print("** no instance found **")
+
 
     def do_all(self, line):
         """Prints all string representation of
