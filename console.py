@@ -5,7 +5,6 @@ from models.base_model import BaseModel
 from models import storage
 
 
-
 class HBNBCommand(cmd.Cmd):
     prompt = "(hbnb) "
     valid_classes = ["BaseModel"]
@@ -38,7 +37,7 @@ class HBNBCommand(cmd.Cmd):
             print(new_instance.id)
 
     def check_instance(self, line):
-        """retun the instance from json if the line refere to a valid instance"""
+        """retun the instance from json if the line refere to an instance"""
         args = line.split()
         if not args:
             print("** class name missing **")
@@ -51,7 +50,6 @@ class HBNBCommand(cmd.Cmd):
 
         instance_id = args[1]
 
-        # Chargez l'instance à partir du fichier JSON
         all_instances = storage.all()
         instance_key = "{}.{}".format(class_name, instance_id)
         if instance_key not in all_instances:
@@ -59,20 +57,47 @@ class HBNBCommand(cmd.Cmd):
             return None
 
         return all_instances[instance_key]
-    
+
     def do_show(self, line):
-        """Prints the string representation of an instance based on the class name and id."""
+        """Prints the string representation of an
+        instance based on the class name and id."""
         instance = self.check_instance(line)
         if instance:
             print(instance)
-    
+
     def do_destroy(self, line):
-        """Deletes an instance based on the class name and id (save the change into the JSON file)."""
+        """Deletes an instance based on the class name and id"""
         instance = self.check_instance(line)
 
         if instance:
             all_instances = storage.all()
             del all_instances[instance.__name__]
+
+    def do_all(self, line):
+        """Prints all string representation of
+        all instances based or not on the class name."""
+        if not line:
+
+            all_instances = storage.all()
+            for instance_key, instance in all_instances.items():
+                print(instance)
+        else:
+
+            class_name = line.split()[0]
+            if class_name not in self.valid_classes:
+                print("** class doesn't exist **")
+                return
+
+            instances_of_class = [instance
+                                  for key, instance in storage.all().items()
+                                  if class_name in key]
+            if not instances_of_class:
+                print("** no instance found **")
+                return
+
+            for instance in instances_of_class:
+                print(instance)
+
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
