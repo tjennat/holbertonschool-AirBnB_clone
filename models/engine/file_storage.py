@@ -2,6 +2,7 @@
 """This is going to be my class for storing some files"""
 
 import json
+import os
 
 class FileStorage:
     __file_path = "file.json"
