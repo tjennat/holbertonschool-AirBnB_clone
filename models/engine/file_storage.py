@@ -29,7 +29,9 @@ class FileStorage:
     def reload(self):
         """Deserializes"""
         from models import base_model
-        dict_module = {"BaseModel" : base_model}
+        from models import user
+        dict_module = {"BaseModel": base_model,
+                       "User": user}
 
         try:
             with open(self.__file_path, 'r') as f:
