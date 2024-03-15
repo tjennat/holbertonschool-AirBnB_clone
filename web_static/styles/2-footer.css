@@ -7,4 +7,9 @@ footer {
     justify-content: center;
     position: fixed;
     bottom: 0;
+    margin: 0;
+    padding: 0;
+}
+footer p {
+    margin: 0;
 }
